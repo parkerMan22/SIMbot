@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -37,15 +38,23 @@ public class SimpleCarController : MonoBehaviour {
     {
         float motor = maxMotorTorque * Input.GetAxis("Vertical");
         float steering = maxSteeringAngle * Input.GetAxis("Horizontal");
-     
+        //testing tank driving by getting rid of steering and put motors on different inputs
         foreach (AxleInfo axleInfo in axleInfos) {
-            if (axleInfo.steering) {
+            /*if (axleInfo.steering) {
                 axleInfo.leftWheel.steerAngle = steering;
                 axleInfo.rightWheel.steerAngle = steering;
-            }
+            }*/
+
             if (axleInfo.motor) {
-                axleInfo.leftWheel.motorTorque = motor;
-                axleInfo.rightWheel.motorTorque = motor;
+                if (Input.GetKey("w") || Input.GetKey("s"))
+                {
+                    axleInfo.leftWheel.motorTorque = motor;
+                }
+                else if (Input.GetKey("i") || Input.GetKey("k"))
+                {
+                    axleInfo.rightWheel.motorTorque = motor;
+                }
+                //axleInfo.rightWheel.motorTorque = motor;
             }
             ApplyLocalPositionToVisuals(axleInfo.leftWheel);
             ApplyLocalPositionToVisuals(axleInfo.rightWheel);
