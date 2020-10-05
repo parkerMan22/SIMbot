@@ -36,31 +36,47 @@ public class SimpleCarController : MonoBehaviour {
      
     public void FixedUpdate()
     {
-        float motor = maxMotorTorque * Input.GetAxis("Vertical");
-        float steering = maxSteeringAngle * Input.GetAxis("Horizontal");
-        //testing tank driving by getting rid of steering and put motors on different inputs
-        foreach (AxleInfo axleInfo in axleInfos) {
-            /*if (axleInfo.steering) {
-                axleInfo.leftWheel.steerAngle = steering;
-                axleInfo.rightWheel.steerAngle = steering;
-            }*/
+        //May not need these inputs rn.
+        //float motor = maxMotorTorque * Input.GetAxis("Vertical");
+        //float steering = maxSteeringAngle * Input.GetAxis("Horizontal");
+        
+        //Speed of motors
+        float speed = 2 * maxMotorTorque;
 
-            if (axleInfo.motor) {
-                if (Input.GetKey("w") || Input.GetKey("s"))
-                {
-                    axleInfo.leftWheel.motorTorque = motor;
-                }
-                else if (Input.GetKey("i") || Input.GetKey("k"))
-                {
-                    axleInfo.rightWheel.motorTorque = motor;
-                }
-                //axleInfo.rightWheel.motorTorque = motor;
+        //Finds each right and left wheel with motors
+        foreach (AxleInfo axleInfo in axleInfos) {
+
+            //Get Left Wheel Input W/S
+            if (Input.GetKey("w")) {
+                //Spins Forward
+                axleInfo.leftWheel.motorTorque = speed;
+            } else if (Input.GetKey("s")) {
+                //Spins Backward
+                axleInfo.leftWheel.motorTorque = -speed;
+            } else {
+                //Stops Motor if no input
+                axleInfo.leftWheel.motorTorque = 0;
             }
+
+            //Get Right Wheel Input I/K
+            if (Input.GetKey("i")) {
+                //Spins Forward
+                axleInfo.rightWheel.motorTorque = speed;
+            } else if (Input.GetKey("k")) {
+                //Spins Backward
+                axleInfo.rightWheel.motorTorque = -speed;
+            } else {
+                //Stops Motor if no input
+                axleInfo.rightWheel.motorTorque = 0;
+            }
+
             ApplyLocalPositionToVisuals(axleInfo.leftWheel);
             ApplyLocalPositionToVisuals(axleInfo.rightWheel);
         }
     }
 }
+
+// ### OLD TANK MOTOR CODE BELOW ### //
 
 /*using UnityEngine;
 using System.Collections;
